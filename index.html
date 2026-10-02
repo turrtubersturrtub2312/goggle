@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class=""><head><script>window.livecodes = window.livecodes || {};</script><title>Google (New web)</title><meta name="title" content="Google (New web)"><meta charset="UTF-8">
+<html lang="en" class=""><head><script>window.livecodes = window.livecodes || {};</script><title>Google (New update)</title><meta name="title" content="Google (New update)"><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="./style.css"><script src="https://cdn.jsdelivr.net/npm/es-module-shims@1.10.0/dist/es-module-shims.js" async=""></script><script type="importmap">{
   "imports": {}
 }</script></head><body>
@@ -7,9 +7,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google</title>
+    <title>Google Clone</title>
     
-    <!-- CSS Disepadukan -->
     <style>
         * {
             box-sizing: border-box;
@@ -25,6 +24,25 @@
             justify-content: space-between;
             align-items: center;
             background-color: #ffffff;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 0.3s ease-in-out;
+        }
+
+        /* Mod Khas jika Wallpaper Diaktifkan (Supaya Teks Nampak Jelas) */
+        body.has-bg {
+            color: white;
+        }
+
+        body.has-bg header a, 
+        body.has-bg footer {
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        body.has-bg .logo {
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         /* Navigasi Atas */
@@ -41,13 +59,14 @@
             color: #202124;
             text-decoration: none;
             font-size: 14px;
+            font-weight: 500;
         }
 
         header a:hover {
             text-decoration: underline;
         }
 
-        /* Bahagian Utama / Carian */
+        /* Bahagian Utama */
         main {
             display: flex;
             flex-direction: column;
@@ -55,7 +74,7 @@
             width: 100%;
             max-width: 584px;
             padding: 0 20px;
-            margin-top: -100px;
+            margin-top: -60px;
         }
 
         .logo {
@@ -66,7 +85,6 @@
             user-select: none;
         }
 
-        /* Warna Huruf Logo Google */
         .g1 { color: #4285F4; }
         .o1 { color: #EA4335; }
         .o2 { color: #FBBC05; }
@@ -83,13 +101,14 @@
             border: 1px solid #dfe1e5;
             border-radius: 24px;
             padding: 0 15px;
-            box-shadow: none;
+            background-color: #ffffff;
+            box-shadow: 0 1px 6px rgba(32,33,36,0.1);
             transition: box-shadow 0.2s, border-color 0.2s;
         }
 
         .search-box:hover, .search-box:focus-within {
-            box-shadow: 0 1px 6px rgba(32,33,36,0.28);
-            border-color: rgba(223,225,229,0);
+            box-shadow: 0 1px 8px rgba(32,33,36,0.3);
+            border-color: transparent;
         }
 
         .search-icon {
@@ -105,6 +124,7 @@
             outline: none;
             font-size: 16px;
             color: #202124;
+            background: transparent;
         }
 
         /* Butang Carian */
@@ -133,10 +153,39 @@
             color: #202124;
         }
 
+        /* Panel Custom Wallpaper (Kanan Bawah) */
+        .bg-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            padding: 8px 12px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        }
+
+        .bg-btn {
+            background: #4285F4;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .bg-btn:hover {
+            background: #2b6cb0;
+        }
+
         /* Footer */
         footer {
             width: 100%;
-            background: #f2f2f2;
+            background: rgba(242, 242, 242, 0.8);
             color: #70757a;
             font-size: 14px;
             text-align: center;
@@ -155,12 +204,10 @@
 
     <!-- Content Utama -->
     <main>
-        <!-- Logo Google -->
         <div class="logo">
             <span class="g1">G</span><span class="o1">o</span><span class="o2">o</span><span class="g2">g</span><span class="l">l</span><span class="e">e</span>
         </div>
 
-        <!-- Form / Kotak Carian -->
         <form id="searchForm" style="width: 100%;">
             <div class="search-box">
                 <svg class="search-icon" viewBox="0 0 24 24">
@@ -176,45 +223,87 @@
         </form>
     </main>
 
+    <!-- Panel Butang Tukar Wallpaper -->
+    <div class="bg-control">
+        <button class="bg-btn" id="changeBgBtn">🎨 Tukar Wallpaper</button>
+        <button class="bg-btn" id="resetBgBtn" style="background: #ea4335;">❌ Reset</button>
+    </div>
+
     <!-- Footer -->
     <footer>
         Google Clone © 2026
     </footer>
 
-    <!-- JavaScript Disepadukan (Di bahagian bawah supaya DOM sedia dimuatkan) -->
+    <!-- JavaScript -->
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchForm = document.getElementById('searchForm');
-        const searchInput = document.getElementById('searchInput');
-        const luckyBtn = document.getElementById('luckyBtn');
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchForm = document.getElementById('searchForm');
+            const searchInput = document.getElementById('searchInput');
+            const luckyBtn = document.getElementById('luckyBtn');
+            const changeBgBtn = document.getElementById('changeBgBtn');
+            const resetBgBtn = document.getElementById('resetBgBtn');
 
-        // Pencarian Normal
-        if (searchForm) {
-            searchForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                
-                const query = searchInput ? searchInput.value.trim() : '';
-                
-                if (query !== '') {
-                    // Gunakan window.open dengan '_blank' agar terbuka di tab baru
-                    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
-                }
-            });
-        }
+            // Senarai Wallpaper Rawak (Unsplash HQ)
+            const wallpapers = [
+                'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1600',
+                'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600',
+                'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1600',
+                'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600',
+                'https://images.unsplash.com/photo-1790847329682-f22dceb2ee71?q=80&w=871&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+            ];
 
-        // Tombol Lucky
-        if (luckyBtn) {
-            luckyBtn.addEventListener('click', function() {
-                const query = searchInput ? searchInput.value.trim() : '';
-                if (query !== '') {
-                    window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}&btnI=I`, '_blank');
+            // 1. Carian Google (Buka Tab Baru supaya x-frame tak error)
+            if (searchForm) {
+                searchForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const query = searchInput ? searchInput.value.trim() : '';
+                    if (query !== '') {
+                        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
+                    }
+                });
+            }
+
+            if (luckyBtn) {
+                luckyBtn.addEventListener('click', function() {
+                    const query = searchInput ? searchInput.value.trim() : '';
+                    if (query !== '') {
+                        window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}&btnI=I`, '_blank');
+                    } else {
+                        window.open(`https://www.google.com/doodles`, '_blank');
+                    }
+                });
+            }
+
+            // 2. Fungsi Tukar Wallpaper
+            function setBg(url) {
+                if(url) {
+                    document.body.style.backgroundImage = `url('${url}')`;
+                    document.body.classList.add('has-bg');
+                    localStorage.setItem('customBg', url); // Simpan pilihan dalam browser
                 } else {
-                    window.open(`https://www.google.com/doodles`, '_blank');
+                    document.body.style.backgroundImage = 'none';
+                    document.body.classList.remove('has-bg');
+                    localStorage.removeItem('customBg');
                 }
+            }
+
+            // Load wallpaper yang disimpan sebelum ini (jika ada)
+            const savedBg = localStorage.getItem('customBg');
+            if (savedBg) setBg(savedBg);
+
+            // Klik butang "Tukar Wallpaper"
+            changeBgBtn.addEventListener('click', function() {
+                // Pilih satu gambar secara rawak dari senarai
+                const randomBg = wallpapers[Math.floor(Math.random() * wallpapers.length)];
+                setBg(randomBg);
             });
-        }
-    });
-</script>
+
+            // Klik butang "Reset"
+            resetBgBtn.addEventListener('click', function() {
+                setBg(null);
+            });
+        });
+    </script>
 
 
 <script src="./script.js"></script></body></html>
